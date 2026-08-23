@@ -11,6 +11,10 @@ description: >-
   Xvfb and noVNC.
 developer: Local
 website: https://github.com/microsoft/playwright-mcp
+repo: https://github.com/LarsAPI/linala-umbrel-app-store
+support: https://github.com/LarsAPI/linala-umbrel-app-store/issues
 dependencies: []
 gallery: []
 releaseNotes: ""
+defaultUsername: ""
+defaultPassword: ""
