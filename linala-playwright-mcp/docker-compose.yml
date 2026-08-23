@@ -23,7 +23,6 @@ services:
       - "127.0.0.1:6080:6080"
 
     volumes:
-      - ./start-mcp.sh:/usr/local/bin/start-mcp.sh:ro
       - ${APP_DATA_DIR}/data/adobe-profile:/data/adobe-profile
 
     networks:
