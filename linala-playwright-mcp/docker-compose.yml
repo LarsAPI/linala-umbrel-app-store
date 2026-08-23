@@ -1,0 +1,35 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: linala-playwright-mcp_server_1
+      APP_PORT: 3000
+
+  server:
+    image: ghcr.io/larsapi/playwright-mcp-novnc:0.0.79
+    init: true
+    restart: on-failure
+    shm_size: "2gb"
+
+    environment:
+      SCREEN_WIDTH: "1920"
+      SCREEN_HEIGHT: "1080"
+      SCREEN_DEPTH: "24"
+      MCP_PORT: "3000"
+      MCP_BROWSER: "chromium"
+
+    ports:
+      - "127.0.0.1:6080:6080"
+
+    volumes:
+      - ./start-mcp.sh:/usr/local/bin/start-mcp.sh:ro
+      - ${APP_DATA_DIR}/data/adobe-profile:/data/adobe-profile
+
+    networks:
+      - umbrel_main_network
+
+networks:
+  umbrel_main_network:
+    name: umbrel_main_network
+    external: true
