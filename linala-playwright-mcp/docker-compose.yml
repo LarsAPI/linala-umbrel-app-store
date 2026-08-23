@@ -26,7 +26,9 @@ services:
       - ${APP_DATA_DIR}/data/adobe-profile:/data/adobe-profile
 
     networks:
-      - umbrel_main_network
+      umbrel_main_network:
+        aliases:
+          - playwright-mcp
 
 networks:
   umbrel_main_network:
