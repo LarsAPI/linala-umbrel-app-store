@@ -44,6 +44,7 @@ RUN cat > /etc/playwright-config.json <<'EOF'
 }
 EOF
 
+COPY playwright-productor-config.json /etc/playwright-productor-config.json
 COPY start-mcp.sh /usr/local/bin/start-mcp.sh
 RUN chmod +x /usr/local/bin/start-mcp.sh
 
