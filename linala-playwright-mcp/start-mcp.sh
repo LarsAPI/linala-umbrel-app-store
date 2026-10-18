@@ -8,8 +8,21 @@ echo "MCP Port:   ${MCP_PORT:-3000}"
 echo "Browser:    ${MCP_BROWSER:-chromium}"
 echo "Display:    ${DISPLAY:-:99}"
 echo "Resolution: ${SCREEN_WIDTH:-1920}x${SCREEN_HEIGHT:-1080}"
-echo "Profile:    /data/adobe-profile"
+echo "Profile:    ${MCP_PROFILE_DIR:-/data/adobe-profile}"
+echo "Config:     ${MCP_CONFIG:-/etc/playwright-config.json}"
 echo "=============================================="
+
+# Validate the optional research extension before starting the display server.
+# The existing Adobe service has no MCP_EXTENSION_DIR and is unaffected.
+if [ ! -f "${MCP_CONFIG:-/etc/playwright-config.json}" ]; then
+    echo "ERROR: MCP config missing: ${MCP_CONFIG:-/etc/playwright-config.json}" >&2
+    exit 1
+fi
+if [ -n "${MCP_EXTENSION_DIR:-}" ] && [ ! -f "${MCP_EXTENSION_DIR}/manifest.json" ]; then
+    echo "ERROR: Unpacked extension manifest not found: ${MCP_EXTENSION_DIR}/manifest.json" >&2
+    exit 1
+fi
+mkdir -p "${MCP_PROFILE_DIR:-/data/adobe-profile}"
 
 # -------------------------------------------------
 # Xvfb
@@ -102,7 +115,7 @@ exec node /app/cli.js \
     --port "${MCP_PORT:-3000}" \
     --host 0.0.0.0 \
     --browser "${MCP_BROWSER:-chromium}" \
-    --config /etc/playwright-config.json \
-    --allowed-hosts "*" \
+    --config "${MCP_CONFIG:-/etc/playwright-config.json}" \
+    --allowed-hosts "${MCP_ALLOWED_HOSTS:-*}" \
     --viewport-size "${SCREEN_WIDTH:-1920}x${SCREEN_HEIGHT:-1080}" \
-    --user-data-dir /data/adobe-profile
+    --user-data-dir "${MCP_PROFILE_DIR:-/data/adobe-profile}"
