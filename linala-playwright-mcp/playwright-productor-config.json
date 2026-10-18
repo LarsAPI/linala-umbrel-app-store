@@ -1,0 +1,16 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "launchOptions": {
+      "channel": "chromium",
+      "headless": false,
+      "args": [
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-infobars",
+        "--disable-extensions-except=/opt/extensions/productor",
+        "--load-extension=/opt/extensions/productor"
+      ]
+    }
+  }
+}
