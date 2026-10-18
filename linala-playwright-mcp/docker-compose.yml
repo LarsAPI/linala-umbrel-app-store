@@ -30,6 +30,39 @@ services:
         aliases:
           - playwright-mcp
 
+  # Opt-in proof of concept; does not change the existing server.
+  research:
+    profiles: ["productor"]
+    build:
+      context: .
+    image: ghcr.io/larsapi/playwright-mcp-novnc:productor-poc
+    init: true
+    restart: on-failure
+    shm_size: "2gb"
+
+    environment:
+      SCREEN_WIDTH: "1920"
+      SCREEN_HEIGHT: "1080"
+      SCREEN_DEPTH: "24"
+      MCP_PORT: "3000"
+      MCP_BROWSER: "chromium"
+      MCP_CONFIG: "/etc/playwright-productor-config.json"
+      MCP_PROFILE_DIR: "/data/productor-profile"
+      MCP_EXTENSION_DIR: "/opt/extensions/productor"
+      MCP_ALLOWED_HOSTS: "playwright-mcp-productor"
+
+    ports:
+      - "127.0.0.1:6081:6080"
+
+    volumes:
+      - ${APP_DATA_DIR}/data/productor-profile:/data/productor-profile
+      - ${APP_DATA_DIR}/data/extensions/productor:/opt/extensions/productor:ro
+
+    networks:
+      umbrel_main_network:
+        aliases:
+          - playwright-mcp-productor
+
 networks:
   umbrel_main_network:
     name: umbrel_main_network
